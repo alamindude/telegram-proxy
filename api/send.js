@@ -1,22 +1,37 @@
 export default async function handler(req, res) {
 
-  // Only allow POST request
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { message } = req.body;
+    const { message, ip } = req.body;
 
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    // 🔐 তোমার নতুন Bot Token বসাও এখানে
+    // 🔐 তোমার নতুন Bot Token বসাও
     const TOKEN = "8422637250:AAFewyJV87eCF4mALyxNx4FxJrgAC7ReA24";
-
-    // 🔐 তোমার Chat ID
     const CHAT_ID = "7914450932";
+
+    let locationText = "";
+
+    // 🌍 IP Location Fetch
+    if (ip) {
+      try {
+        const geoRes = await fetch(`http://ip-api.com/json/${ip}`);
+        const geoData = await geoRes.json();
+
+        if (geoData.status === "success") {
+          locationText = `\n📍 <b>Location:</b> ${geoData.city}, ${geoData.regionName}, ${geoData.country}`;
+        }
+      } catch (err) {
+        locationText = "";
+      }
+    }
+
+    const finalMessage = message + locationText;
 
     const telegramUrl = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
@@ -27,8 +42,8 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         chat_id: CHAT_ID,
-        text: message,
-        parse_mode: "HTML" // Bold, line break support
+        text: finalMessage,
+        parse_mode: "HTML"
       }),
     });
 
