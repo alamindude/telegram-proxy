@@ -67,7 +67,7 @@ export default async function handler(req, res) {
       extraInfo += `\n🔥 <b>FRAUD RISK: HIGH</b>`;
     }
 
-    const finalMessage = message + "\n\n━━━━━━━━━━━━━━━━━━━━━━━" + extraInfo;
+    const finalMessage = message + "\n\n━━━━━━━━━━━━━━━━━━" + extraInfo;
 
     const telegramUrl = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
