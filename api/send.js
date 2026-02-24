@@ -84,7 +84,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         chat_id: chat_id,
-        text: message + "\n\n━━━━━━━━━━━━━━━━━━━━━━━" + extraInfo,
+        text: message + "\n\n━━━━━━━━━━━━━━━━━━━" + extraInfo,
         parse_mode: "HTML"
       })
     });
